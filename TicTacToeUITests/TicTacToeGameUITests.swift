@@ -21,24 +21,6 @@ class TicTacToeGameUITests: XCTestCase {
         app.launch()
     }
     
-    func testRecording() {
-        //place cursor here
-        
-        let app = XCUIApplication()
-        let element2 = app.children(matching: .window).element(boundBy: 0).children(matching: .other).element
-        let element = element2.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element
-        let element3 = element.children(matching: .other).element(boundBy: 0)
-        let button = element3.children(matching: .button).matching(identifier: " ").element(boundBy: 0)
-        button.tap()
-        button.tap()
-        element3.buttons[" "].tap()
-        element.children(matching: .other).element(boundBy: 1).children(matching: .button).matching(identifier: " ").element(boundBy: 0).tap()
-        element2.children(matching: .other).element(boundBy: 0).tap()
-        app.buttons["Restart"].tap()
-        
-        
-    }
-    
     var statusLabel: XCUIElement {
         let label = app.staticTexts["GameViewController.statusLabel"]
         XCTAssertTrue(label.exists)
@@ -57,10 +39,12 @@ class TicTacToeGameUITests: XCTestCase {
         return button
     }
     
+    
     func testGameBoardIsClearOnStart() {
         // TEST: status label
         // TEST: restart button
         // TEST: All buttons are blank
+        
         
         XCTAssertEqual("Place your mark", statusLabel.label)
         
@@ -71,17 +55,21 @@ class TicTacToeGameUITests: XCTestCase {
         }
     }
     
+       //AAA = Arrange, Act, Assert
+    
     func testGameBoardResetClearBoard() {
         
         
-        
+        //Arrange
         for i in 0 ..< 9 {
             let button = buttonAt(i)
             button.tap()
         }
         
+        //Act
         restartButton.tap()
         
+        //Assert
         for i in 0 ..< 9 {
             XCTAssertEqual(" ", buttonAt(i).label)
         }
@@ -89,7 +77,13 @@ class TicTacToeGameUITests: XCTestCase {
         XCTAssertEqual("Player X's turn", statusLabel.label)
     }
     
-
-    
-    
+    func testPlayerXVerticalWin1() {
+        buttonAt(0).tap()
+        buttonAt(1).tap()
+        buttonAt(3).tap()
+        buttonAt(4).tap()
+        buttonAt(6).tap()
+        //player X has won
+        XCTAssertEqual("Player X won!", statusLabel.label)
+    }
 }
